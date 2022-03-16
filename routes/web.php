@@ -17,8 +17,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::name('admin.')
+    ->prefix('admin')
+    ->middleware('auth')
+    ->group(function () {
+        Route::resource('employers', '\App\Http\Controllers\Admin\EmployerController')
+            ->names('employers')
+            ->only('index', 'edit', 'update', 'create', 'store');
+        Route::resource('positions', '\App\Http\Controllers\Admin\PositionController')
+            ->names('positions')
+            ->only('index', 'edit', 'update', 'create', 'store');
+    });
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
